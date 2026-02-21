@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ruby&Sam 首爾6天5夜 2026</title>
+<style>
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --coral:   #FF6B6B;
+  --rose:    #FFB3B3;
+  --indigo:  #5B4FE9;
+  --indigo2: #7B72F0;
+  --navy:    #1E1B4B;
+  --cream:   #FFF8F5;
+  --warm:    #FDF4EE;
+  --muted:   #9F8F8A;
+  --deep:    #2D2320;
+  --gold:    #D4A855;
+  --shadow:  0 4px 24px rgba(90,70,60,.10);
+  --shadow-lg: 0 12px 40px rgba(90,70,60,.18);
+}
+
+body {
+  font-family: 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', 'Apple SD Gothic Neo', sans-serif;
+  background: var(--cream);
+  color: var(--deep);
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  background: white;
+  min-height: 100vh;
+  box-shadow: 0 0 60px rgba(0,0,0,.08);
+  padding-bottom: 60px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ── HEADER ── */
+.header {
+  background: linear-gradient(145deg, #5B4FE9 0%, #8B5CF6 50%, #EC4899 100%);
+  padding: 28px 20px 24px;
+  border-radius: 0 0 32px 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.header::before {
+  content: '서울';
+  position: absolute;
+  right: -10px; top: -10px;
+  font-size: 100px;
+  font-weight: 900;
+  color: rgba(255,255,255,.08);
+  line-height: 1;
+  pointer-events: none;
+  letter-spacing: -4px;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -30px; left: -30px;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(255,150,150,.2), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.header-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,.65);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.header h1 {
+  font-size: 30px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+
+.header-date {
+  font-size: 13px;
+  color: rgba(255,255,255,.8);
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.header-heart {
+  background: rgba(255,255,255,.2);
+  border: 1px solid rgba(255,255,255,.3);
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  backdrop-filter: blur(10px);
+  flex-shrink: 0;
+}
+
+/* Quick buttons */
+.quick-btns {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.qbtn {
+  flex: 1;
+  background: rgba(255,255,255,.13);
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 16px;
+  padding: 12px 6px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  transition: background .2s, transform .15s;
+  color: white;
+  font-size: inherit;
+  font-family: inherit;
+  backdrop-filter: blur(10px);
+}
+
+.qbtn:active { background: rgba(255,255,255,.25); transform: scale(.96); }
+
+.qbtn-icon { font-size: 22px; }
+.qbtn-label { font-size: 11px; font-weight: 700; color: rgba(255,255,255,.9); }
+
+/* ── MAIN ── */
+main {
+  padding: 20px 16px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── DAY CARDS ── */
+.day-card {
+  background: white;
+  border-radius: 20px;
+  border: 1.5px solid #F0EBE8;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,.05);
+  transition: box-shadow .25s;
+}
+
+.day-card:focus-within,
+.day-card.open { box-shadow: 0 6px 24px rgba(91,79,233,.12); border-color: #DDD6FE; }
+
+.day-toggle {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: background .15s;
+  font-family: inherit;
+}
+
+.day-toggle:active { background: #FBF9FF; }
+
+.day-badge {
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.badge-1 { background: linear-gradient(135deg,#fce7f3,#fbcfe8); color: #9d174d; }
+.badge-2 { background: linear-gradient(135deg,#ede9fe,#ddd6fe); color: #5b21b6; }
+.badge-3 { background: linear-gradient(135deg,#dbeafe,#bfdbfe); color: #1e40af; }
+.badge-4 { background: linear-gradient(135deg,#dcfce7,#bbf7d0); color: #14532d; }
+.badge-5 { background: linear-gradient(135deg,#fef9c3,#fef08a); color: #713f12; }
+.badge-6 { background: linear-gradient(135deg,#f1f5f9,#e2e8f0); color: #475569; }
+
+.day-info { flex: 1; }
+.day-title { font-size: 16px; font-weight: 700; color: var(--deep); }
+.day-subtitle { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: .5px; text-transform: uppercase; margin-top: 2px; }
+
+.chevron {
+  font-size: 13px;
+  color: #C4B5B0;
+  transition: transform .3s ease;
+  flex-shrink: 0;
+}
+
+.day-card.open .chevron { transform: rotate(180deg); }
+
+/* Day content */
+.day-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .45s cubic-bezier(.4,0,.2,1);
+}
+
+.day-card.open .day-content { max-height: 1800px; }
+
+.day-inner {
+  background: #FAFAF9;
+  border-top: 1px solid #F0EBE8;
+  padding: 20px 18px;
+}
+
+/* Timeline */
+.timeline { position: relative; display: flex; flex-direction: column; gap: 0; }
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 19px; top: 8px; bottom: 8px;
+  width: 1.5px;
+  background: linear-gradient(to bottom, #E0D8F0, #EDE8F5);
+}
+
+.tl-row {
+  display: flex;
+  gap: 16px;
+  padding-bottom: 22px;
+  position: relative;
+}
+
+.tl-row:last-child { padding-bottom: 0; }
+
+.tl-dot-wrap {
+  flex-shrink: 0;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  padding-top: 2px;
+}
+
+.tl-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 0 0 1.5px currentColor, 0 2px 6px rgba(0,0,0,.12);
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.dot-blue   { color: #3B82F6; background: #3B82F6; }
+.dot-slate  { color: #64748B; background: #64748B; }
+.dot-pink   { color: #EC4899; background: #EC4899; }
+.dot-orange { color: #F97316; background: #F97316; }
+.dot-purple { color: #A855F7; background: #A855F7; }
+.dot-green  { color: #22C55E; background: #22C55E; }
+.dot-cyan   { color: #06B6D4; background: #06B6D4; }
+.dot-red    { color: #EF4444; background: #EF4444; }
+.dot-gray   { color: #9CA3AF; background: #9CA3AF; }
+.dot-indigo { color: #6366F1; background: #6366F1; }
+.dot-amber  { color: #F59E0B; background: #F59E0B; }
+.dot-navy   { color: #3730A3; background: #3730A3; }
+
+.tl-body { flex: 1; }
+.tl-time { font-size: 10.5px; font-weight: 700; color: var(--muted); letter-spacing: .5px; margin-bottom: 1px; }
+.tl-title { font-size: 15px; font-weight: 700; color: var(--deep); line-height: 1.3; }
+.tl-sub { font-size: 12.5px; color: #7B6F6A; margin-top: 4px; line-height: 1.5; }
+
+.tl-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 8px;
+  margin-top: 7px;
+  line-height: 1.4;
+}
+
+.chip-blue   { background: #EFF6FF; color: #1D4ED8; }
+.chip-yellow { background: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; }
+.chip-green  { background: #F0FDF4; color: #166534; }
+
+.tl-list-card {
+  background: white;
+  border: 1px solid #EDE9E7;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: #5C5358;
+  line-height: 1.8;
+}
+
+/* Backup button */
+.backup-btn {
+  background: linear-gradient(135deg, #FFF1F2, #FFF7ED);
+  border: 1.5px solid #FECDD3;
+  border-radius: 14px;
+  padding: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: transform .15s, box-shadow .15s;
+  width: 100%;
+  font-family: inherit;
+  text-align: left;
+  margin-bottom: 16px;
+}
+
+.backup-btn:active { transform: scale(.97); box-shadow: var(--shadow); }
+
+.backup-tag { font-size: 10px; font-weight: 800; color: #E11D48; background: white; border: 1px solid #FECDD3; padding: 2px 7px; border-radius: 20px; display: inline-block; margin-bottom: 4px; }
+.backup-title { font-size: 14px; font-weight: 700; color: #9F1239; }
+.backup-hint  { font-size: 11px; color: #BE123C; margin-top: 2px; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20,10,10,.55);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0 0 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s;
+  backdrop-filter: blur(4px);
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-sheet {
+  background: white;
+  border-radius: 28px 28px 0 0;
+  width: 100%;
+  max-width: 480px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%);
+  transition: transform .35s cubic-bezier(.32,0,.15,1);
+  box-shadow: 0 -8px 40px rgba(0,0,0,.18);
+  overflow: hidden;
+}
+
+.modal-overlay.open .modal-sheet {
+  transform: translateY(0);
+}
+
+.modal-handle {
+  width: 40px; height: 4px;
+  background: #E0D8D5;
+  border-radius: 2px;
+  margin: 12px auto 0;
+  flex-shrink: 0;
+}
+
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px 14px;
+  flex-shrink: 0;
+  border-bottom: 1px solid #F3EFEC;
+}
+
+.modal-title { font-size: 18px; font-weight: 800; color: var(--deep); }
+
+.modal-close {
+  background: #F3EFEC;
+  border: none;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  transition: background .15s;
+  font-family: inherit;
+}
+
+.modal-close:active { background: #E5DDD9; }
+
+.modal-body {
+  padding: 16px 20px 32px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.modal-body::-webkit-scrollbar { display: none; }
+.modal-body { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Hotel card */
+.hotel-show-card {
+  background: #F8F6FF;
+  border: 1.5px solid #DDD6FE;
+  border-radius: 16px;
+  padding: 16px;
+  text-align: center;
+}
+
+.driver-hint { font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+.driver-korean { font-size: 20px; font-weight: 800; color: var(--deep); letter-spacing: -.5px; }
+
+.addr-row {
+  background: white;
+  border: 1.5px solid #E8E3FF;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  text-align: left;
+}
+
+.addr-text { font-size: 14px; font-weight: 700; color: var(--deep); line-height: 1.4; }
+
+.copy-btn {
+  background: var(--indigo);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s, transform .1s;
+  font-family: inherit;
+  flex-shrink: 0;
+}
+
+.copy-btn:active { transform: scale(.94); }
+.copy-btn.copied { background: #16A34A; }
+
+/* Subway list */
+.subway-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FAFAF9;
+  border: 1px solid #EDE9E7;
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+}
+
+.subway-left { display: flex; align-items: center; gap: 10px; }
+.subway-lines { display: flex; flex-direction: column; gap: 3px; }
+.subway-name { font-size: 15px; font-weight: 700; color: var(--deep); }
+.subway-kr { font-size: 14px; color: var(--muted); font-weight: 600; }
+
+.line-pill {
+  font-size: 10.5px;
+  font-weight: 800;
+  color: white;
+  padding: 2px 7px;
+  border-radius: 6px;
+  min-width: 36px;
+  text-align: center;
+  display: inline-block;
+}
+
+.l2   { background: #3CB44A; }
+.l3   { background: #F06F00; }
+.l4   { background: #2C9EDE; }
+.l5   { background: #8836AB; }
+.l6   { background: #B5500B; }
+.l9   { background: #AA9872; }
+.larex { background: #0090D2; }
+
+/* Tax tips */
+.tip-card {
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 10px;
+}
+
+.tip-card-yellow { background: #FFFBEB; border: 1.5px solid #FDE68A; }
+.tip-card-gray   { background: #F9FAFB; border: 1.5px solid #E5E7EB; }
+
+.tip-label { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+.tip-label-yellow { color: #B45309; }
+.tip-label-gray   { color: #4B5563; }
+.tip-text { font-size: 13.5px; line-height: 1.6; color: #5C5358; }
+
+/* Bagel modal */
+.bagel-route {
+  background: #FFF1F2;
+  border-left: 4px solid #F43F5E;
+  border-radius: 0 12px 12px 0;
+  padding: 14px;
+}
+
+.bagel-route p { font-size: 14px; line-height: 1.7; color: #5C2D3A; }
+.bagel-route strong { color: #BE123C; }
+
+/* Food cards */
+.food-area-label {
+  font-size: 10px; font-weight: 800; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--muted);
+  margin: 16px 0 8px;
+}
+.food-area-label:first-child { margin-top: 0; }
+
+.food-card {
+  background: white;
+  border: 1.5px solid #EDE9E7;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  transition: box-shadow .2s;
+}
+.food-card:active { box-shadow: 0 4px 16px rgba(0,0,0,.1); }
+
+.food-emoji {
+  font-size: 26px;
+  flex-shrink: 0;
+  width: 44px; height: 44px;
+  background: #FFF8F5;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.food-info { flex: 1; }
+.food-name { font-size: 14px; font-weight: 800; color: var(--deep); line-height: 1.3; }
+.food-dish { font-size: 12px; color: var(--coral); font-weight: 700; margin-top: 2px; }
+.food-location {
+  font-size: 11.5px; color: var(--muted);
+  margin-top: 5px; line-height: 1.5;
+  display: flex; align-items: flex-start; gap: 4px;
+}
+.food-location-icon { flex-shrink: 0; margin-top: 1px; }
+.food-day-tag {
+  display: inline-block;
+  font-size: 9.5px; font-weight: 700;
+  padding: 2px 7px; border-radius: 10px;
+  margin-top: 6px;
+}
+
+/* Day tag in subway modal */
+.subway-day-tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+  white-space: nowrap;
+  display: inline-block;
+}
+.dtag-1 { background: #fce7f3; color: #9d174d; }
+.dtag-2 { background: #ede9fe; color: #5b21b6; }
+.dtag-3 { background: #dbeafe; color: #1e40af; }
+.dtag-4 { background: #dcfce7; color: #14532d; }
+.dtag-5 { background: #fef9c3; color: #713f12; }
+.subway-row-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.app { animation: fadeSlideUp .5s ease both; }
+
+.day-card { animation: fadeSlideUp .5s ease both; }
+.day-card:nth-child(1) { animation-delay: .05s; }
+.day-card:nth-child(2) { animation-delay: .10s; }
+.day-card:nth-child(3) { animation-delay: .15s; }
+.day-card:nth-child(4) { animation-delay: .20s; }
+.day-card:nth-child(5) { animation-delay: .25s; }
+.day-card:nth-child(6) { animation-delay: .30s; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ── HEADER ── -->
+  <header class="header">
+    <div class="header-top">
+      <div>
+        <p class="header-eyebrow">Seoul Trip 2026 ✈</p>
+        <h1>Ruby&amp;Sam<br><span style="font-size:22px;font-weight:700;opacity:.9;">首爾6天5夜</span></h1>
+        <p class="header-date">📅 3/15 (日) — 3/20 (五)</p>
+      </div>
+    </div>
+
+    <div class="quick-btns">
+      <button class="qbtn" onclick="openModal('hotel')">
+        <span class="qbtn-icon">🏨</span>
+        <span class="qbtn-label">飯店卡</span>
+      </button>
+      <button class="qbtn" onclick="openModal('subway')">
+        <span class="qbtn-icon">🚇</span>
+        <span class="qbtn-label">車站表</span>
+      </button>
+      <button class="qbtn" onclick="openModal('food')">
+        <span class="qbtn-icon">🍽</span>
+        <span class="qbtn-label">美食清單</span>
+      </button>
+      <button class="qbtn" onclick="openModal('tax')">
+        <span class="qbtn-icon">💰</span>
+        <span class="qbtn-label">退稅須知</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ── DAYS ── -->
+  <main>
+
+    <!-- Day 1 -->
+    <div class="day-card" id="card-day1">
+      <button class="day-toggle" onclick="toggleDay('day1')">
+        <div class="day-badge badge-1">D1</div>
+        <div class="day-info">
+          <p class="day-title">第一天行程</p>
+          <p class="day-subtitle">3/15 (日) · 抵達首爾</p>
+        </div>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="day-content" id="day1">
+        <div class="day-inner">
+          <div class="timeline">
+            <div class="tl-row">
+              <div class="tl-dot-wrap"><div class="tl-dot dot-blue"></div></div>
+              <div class="tl-body">
+                <p class="tl-time">13:30</p>
+                <p class="tl-title">抵達仁川機場</p>
+                <p class="tl-sub">入境後先購買 Climate Card 或 T-Money</p>
+              </div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-dot-wrap"><div class="tl-dot dot-slate"></div></div>
+              <div class="tl-body">
+                <p class="tl-time">14:30</p>
+                <p class="tl-title">機場快線 AREX 出發</p>
+                <p class="tl-sub">搭「普通車」至弘大入口站（約 55 分）</p>
+                <div class="tl-chip chip-blue">🚶 下車後往 5 號出口方向 (AK Plaza 連通)</div>
+              </div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-dot-wrap"><div class="tl-dot dot-pink"></div></div>
+              <div class="tl-body">
+                <p class="tl-time">15:30</p>
+                <p class="tl-title">飯店 Check-in 🏨</p>
+                <div class="tl-list-card">
+                  🎯 下午自由行<br>
+                  · 弘大商圈逛街<br>
+                  · AK Plaza（9 號出口方向）
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 2 -->
+    <div class="day-card" id="card-day2">
+      <button class="day-toggle" onclick="toggleDay('day2')">
+        <div class="day-badge badge-2">D2</div>
+        <div class="day-info">
+          <p class="day-title">第二天行程</p>
+          <p class="day-subtitle">3/16 (一) · 變美與百貨</p>
+        </div>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="day-content" id="day2">
+        <div class="day-inner">
+          <div class="timeline">
+            <div class="tl-row">
+              <div class="tl-dot-wrap"><div class="tl-dot dot-amber"></div></div>
+              <div class="tl-body">
+                <p class="tl-time">10:00</p>
+                <p class="tl-title">早午餐：EGGDROP ☀️</p>
+                <p class="tl-sub">弘大店（步行約 10 分鐘）</p>
+              </div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-dot-wrap"><div class="tl-dot dot-purple"></div></div>
+              <div class="tl-body">
+                <p class="tl-time">11:00</p>
+                <p class="tl-title">CHAHONG ROOM 情侶美髮 💇</p>
+                <p class="tl-sub">합정역 2번 출구（合井站 2 號出口）</p>
+              </div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-dot-wrap"><div class="tl-dot dot-green"></div></div>
+              <div class="tl-body">
+                <p class="tl-time">15:00</p>
+                <p class="tl-title">汝矣島現代百貨 🛍</p>
+                <div class="tl-chip chip-yellow">🚕 推薦搭計程車，約 15 分 · 1 萬韓元左右</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 3 -->
+    <div class="day-card" id="card-day3">
+      <button class="day-toggle" onclick="toggleDay('day3')">
+        <div class="day-badge badge-3">D3</div>
+        <div class="day-info">
+          <p class="day-title">第三天行程</p>
+          <p class="day-subtitle">3/17 (二) · 水族館與蠶室</p>
+        </div>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="day-content" id="day3">
+        <div class="day-inner">
+          <div class="timeline">
+            <div class="tl-row">
+              <div class="tl-dot-wrap"><div class="tl-dot dot-blue"></div></div>
+              <div class="tl-body">
+                <p class="tl-time">10:00</p>
+                <p class="tl-title">出發前往 COEX</p>
+                <div class="tl-chip chip-blue">🚇 弘大(2號) → 堂山站轉 9號急行 → 奉恩寺站 7號出口</div>
+              </div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-dot-wrap"><div class="tl-dot dot-cyan"></div></div>
+              <div class="tl-body">
+                <p class="tl-time">11:30</p>
+                <p class="tl-title">COEX 水族館 🐠</p>
+                <p class="tl-sub">逛完順道拍星空圖書館</p>
+              </div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-dot-wrap"><div class="tl-dot dot-pink"></div></div>
+              <div class="tl-body">
+                <p class="tl-time">14:30</p>
+                <p class="tl-title">蠶室 制服約會 💕</p>
+                <p class="tl-sub">🚇 三成站 → 蠶室站（10 分鐘）</p>
+                <div class="tl-list-card">
+                  · 換制服 👗<br>
+                  · 石村湖拍樂天世界城堡<br>
+                  · 樂天塔 Mall（有倫敦貝果！）
+                </div>
+              </div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-dot-wrap"><div class="tl-dot dot-orange"></div></div>
+              <div class="tl-body">
+                <p class="tl-time">20:00</p>
+                <p class="tl-title">回弘大吃燒肉 🔥</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 4 -->
+    <div class="day-card" id="card-day4">
+      <button class="day-toggle" onclick="toggleDay('day4')">
+        <div class="day-badge badge-4">D4</div>
+        <div class="day-info">
+          <p class="day-title">第四天行程</p>
+          <p class="day-subtitle">3/18 (三) · 聖水與明洞</p>
+        </div>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="day-content" id="day4">
+        <div class="day-inner">
+          <div class="timeline">
+            <div class="tl-row">
+              <div class="tl-dot-wrap"><div class="tl-dot dot-green"></div></div>
+              <div class="tl-body">
+                <p class="tl-time">10:30</p>
+                <p class="tl-title">聖水洞早午餐 ☕</p>
+                <p class="tl-sub">Butter Sandwich House</p>
+                <div class="tl-chip chip-blue">🚇 2 號線直達聖水站（約 35 分）</div>
+              </div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-dot-wrap"><div class="tl-dot dot-gray"></div></div>
+              <div class="tl-body">
+                <p class="tl-time">12:00</p>
+                <p class="tl-title">聖水洞逛街</p>
+                <p class="tl-sub">Dior 期間限定店 / Beton 鹽可頌 / 無垢屋雞湯</p>
+              </div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-dot-wrap"><div class="tl-dot dot-red"></div></div>
+              <div class="tl-body">
+                <p class="tl-time">16:00</p>
+                <p class="tl-title">明洞商圈</p>
+                <p class="tl-sub">🚇 聖水 → 乙支路入口站</p>
+                <div class="tl-list-card">
+                  🥟 晚餐：明洞餃子（명동교자）必吃！
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 5 -->
+    <div class="day-card" id="card-day5">
+      <button class="day-toggle" onclick="toggleDay('day5')">
+        <div class="day-badge badge-5">D5</div>
+        <div class="day-info">
+          <p class="day-title">第五天行程</p>
+          <p class="day-subtitle">3/19 (四) · 市場與採買</p>
+        </div>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="day-content" id="day5">
+        <div class="day-inner">
+          <button class="backup-btn" onclick="openModal('bagel')">
+            <div>
+              <span class="backup-tag">備案路線</span>
+              <p class="backup-title">🥯 想吃安國貝果？</p>
+              <p class="backup-hint">點我查看安國站專屬路線</p>
+            </div>
+            <span style="color:#FDA4AF;font-size:18px;">›</span>
+          </button>
+          <div class="timeline">
+            <div class="tl-row">
+              <div class="tl-dot-wrap"><div class="tl-dot dot-amber"></div></div>
+              <div class="tl-body">
+                <p class="tl-time">10:00</p>
+                <p class="tl-title">望遠市場</p>
+                <p class="tl-sub">🚕 建議搭計程車前往，起步價可達</p>
+              </div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-dot-wrap"><div class="tl-dot dot-slate"></div></div>
+              <div class="tl-body">
+                <p class="tl-time">13:00</p>
+                <p class="tl-title">東大門 DDP</p>
+                <p class="tl-sub">nyu nyu 飾品批發、掃貨</p>
+              </div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-dot-wrap"><div class="tl-dot dot-navy"></div></div>
+              <div class="tl-body">
+                <p class="tl-time">19:30</p>
+                <p class="tl-title">Homeplus 合井大採買 🛒</p>
+                <p class="tl-sub">零食、保養品、伴手禮一次搞定！</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 6 -->
+    <div class="day-card" id="card-day6">
+      <button class="day-toggle" onclick="toggleDay('day6')">
+        <div class="day-badge badge-6">D6</div>
+        <div class="day-info">
+          <p class="day-title">第六天行程</p>
+          <p class="day-subtitle">3/20 (五) · 悠閒返家</p>
+        </div>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="day-content" id="day6">
+        <div class="day-inner">
+          <div class="timeline">
+            <div class="tl-row">
+              <div class="tl-dot-wrap"><div class="tl-dot dot-gray"></div></div>
+              <div class="tl-body">
+                <p class="tl-time">11:00</p>
+                <p class="tl-title">飯店 Check-out</p>
+              </div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-dot-wrap"><div class="tl-dot dot-blue"></div></div>
+              <div class="tl-body">
+                <p class="tl-time">11:30</p>
+                <p class="tl-title">專車接送（回程）🚐</p>
+                <p class="tl-sub">司機在 1F 等候（Lobby 在 7F）</p>
+              </div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-dot-wrap"><div class="tl-dot dot-indigo"></div></div>
+              <div class="tl-body">
+                <p class="tl-time">15:00</p>
+                <p class="tl-title">飛機起飛 ✈️</p>
+                <p class="tl-sub">再見首爾，帶著滿滿回憶回家 🫶</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ── MODALS ── -->
+
+<!-- Hotel Modal -->
+<div class="modal-overlay" id="modal-hotel" onclick="overlayClick(event,'hotel')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <p class="modal-title">🏨 飯店資訊</p>
+      <button class="modal-close" onclick="closeModal('hotel')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="hotel-show-card">
+        <p class="driver-hint">🚖 Show to Taxi Driver</p>
+        <p class="driver-korean">홍대 홀리데이 인 익스프레스</p>
+        <div class="addr-row">
+          <p class="addr-text" id="hotelAddr">서울 마포구 양화로 188</p>
+          <button class="copy-btn" id="copyBtn" onclick="copyAddr()">📋 複製</button>
+        </div>
+      </div>
+      <div style="margin-top:16px;background:#F8F6FF;border-radius:14px;padding:14px;font-size:13px;color:#5B4FE9;line-height:1.6;border:1.5px solid #DDD6FE;">
+        💡 <strong>Holiday Inn Express Hongdae</strong><br>
+        弘大智選假日酒店<br>
+        서울 마포구 양화로 188
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Subway Modal -->
+<div class="modal-overlay" id="modal-subway" onclick="overlayClick(event,'subway')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <p class="modal-title">🚇 行程必用車站</p>
+      <button class="modal-close" onclick="closeModal('subway')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="subway-row">
+        <div class="subway-left">
+          <div class="subway-lines">
+            <span class="line-pill l2">239</span>
+            <span class="line-pill larex">A03</span>
+          </div>
+          <span class="subway-name">弘大入口</span>
+        </div>
+        <div class="subway-row-right">
+          <span class="subway-kr">홍대입구</span>
+          <span class="subway-day-tag dtag-1">D1 抵達・每日出發</span>
+        </div>
+      </div>
+      <div class="subway-row">
+        <div class="subway-left">
+          <div class="subway-lines">
+            <span class="line-pill l2">238</span>
+            <span class="line-pill l6">622</span>
+          </div>
+          <span class="subway-name">合井</span>
+        </div>
+        <div class="subway-row-right">
+          <span class="subway-kr">합정</span>
+          <span class="subway-day-tag dtag-2">D2 美髮 11:00</span>
+        </div>
+      </div>
+      <div class="subway-row">
+        <div class="subway-left">
+          <div class="subway-lines">
+            <span class="line-pill l5">526</span>
+            <span class="line-pill l9">915</span>
+          </div>
+          <span class="subway-name">汝矣島</span>
+        </div>
+        <div class="subway-row-right">
+          <span class="subway-kr">여의도</span>
+          <span class="subway-day-tag dtag-2">D2 百貨 15:00</span>
+        </div>
+      </div>
+      <div class="subway-row">
+        <div class="subway-left">
+          <span class="line-pill l9">929</span>
+          <span class="subway-name">奉恩寺</span>
+        </div>
+        <div class="subway-row-right">
+          <span class="subway-kr">봉은사</span>
+          <span class="subway-day-tag dtag-3">D3 COEX 10:00</span>
+        </div>
+      </div>
+      <div class="subway-row">
+        <div class="subway-left">
+          <span class="line-pill l2">219</span>
+          <span class="subway-name">三成</span>
+        </div>
+        <div class="subway-row-right">
+          <span class="subway-kr">삼성</span>
+          <span class="subway-day-tag dtag-3">D3 轉往蠶室</span>
+        </div>
+      </div>
+      <div class="subway-row">
+        <div class="subway-left">
+          <span class="line-pill l2">216</span>
+          <span class="subway-name">蠶室</span>
+        </div>
+        <div class="subway-row-right">
+          <span class="subway-kr">잠실</span>
+          <span class="subway-day-tag dtag-3">D3 制服約會 14:30</span>
+        </div>
+      </div>
+      <div class="subway-row">
+        <div class="subway-left">
+          <span class="line-pill l2">211</span>
+          <span class="subway-name">聖水</span>
+        </div>
+        <div class="subway-row-right">
+          <span class="subway-kr">성수</span>
+          <span class="subway-day-tag dtag-4">D4 早午餐 10:30</span>
+        </div>
+      </div>
+      <div class="subway-row">
+        <div class="subway-left">
+          <span class="line-pill l2">202</span>
+          <span class="subway-name">乙支路入口</span>
+        </div>
+        <div class="subway-row-right">
+          <span class="subway-kr">을지로입구</span>
+          <span class="subway-day-tag dtag-4">D4 明洞 16:00</span>
+        </div>
+      </div>
+      <div class="subway-row">
+        <div class="subway-left">
+          <span class="line-pill l6">621</span>
+          <span class="subway-name">望遠</span>
+        </div>
+        <div class="subway-row-right">
+          <span class="subway-kr">망원</span>
+          <span class="subway-day-tag dtag-5">D5 市場 10:00</span>
+        </div>
+      </div>
+      <div class="subway-row">
+        <div class="subway-left">
+          <div class="subway-lines">
+            <span class="line-pill l2">205</span>
+            <span class="line-pill l4">422</span>
+          </div>
+          <span class="subway-name">東大門 DDP</span>
+        </div>
+        <div class="subway-row-right">
+          <span class="subway-kr" style="font-size:11px;text-align:right;">동대문역사<br>문화공원</span>
+          <span class="subway-day-tag dtag-5">D5 下午 13:00</span>
+        </div>
+      </div>
+      <div class="subway-row">
+        <div class="subway-left">
+          <span class="line-pill l3">328</span>
+          <span class="subway-name">安國</span>
+        </div>
+        <div class="subway-row-right">
+          <span class="subway-kr">안국</span>
+          <span class="subway-day-tag dtag-5">D5 貝果備案</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tax Modal -->
+<div class="modal-overlay" id="modal-tax" onclick="overlayClick(event,'tax')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <p class="modal-title">💰 退稅攻略 2026</p>
+      <button class="modal-close" onclick="closeModal('tax')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="tip-card tip-card-yellow">
+        <p class="tip-label tip-label-yellow">⭐ 方式一：現場退稅（最推薦）</p>
+        <p class="tip-text">結帳時直接出示護照，單筆消費滿額即可直接從金額中扣除稅款，超方便！</p>
+      </div>
+      <div class="tip-card tip-card-gray">
+        <p class="tip-label tip-label-gray">方式二：機場退稅</p>
+        <p class="tip-text">如果商家給的是退稅單據，回程在仁川機場找「電子退稅機（Kiosk）」掃描辦理。</p>
+      </div>
+      <div style="background:#F0FDF4;border:1.5px solid #BBF7D0;border-radius:14px;padding:14px;margin-top:4px;font-size:13px;color:#14532D;line-height:1.7;">
+        ✅ <strong>小提醒</strong>：護照隨身帶，消費時主動詢問「退稅嗎？」就 OK！
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bagel Modal -->
+<div class="modal-overlay" id="modal-bagel" onclick="overlayClick(event,'bagel')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <p class="modal-title" style="color:#BE123C;">🥯 安國貝果路線</p>
+      <button class="modal-close" onclick="closeModal('bagel')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="bagel-route">
+        <p><strong>🚇 地鐵路線</strong></p>
+        <p style="margin-top:8px;">
+          弘大入口（2號線）<br>
+          → 乙支路3街站（轉乘 3號線）<br>
+          → <strong>安國站 2號出口</strong>
+        </p>
+      </div>
+      <div style="background:#FFF7F7;border-radius:14px;padding:14px;margin-top:12px;font-size:13px;color:#7C3040;line-height:1.7;">
+        📍 <strong>안국역 2번 출구</strong><br>
+        出站後附近有多家人氣貝果店，<br>建議提前查好想去的店，假日人潮多！
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Food Modal -->
+<div class="modal-overlay" id="modal-food" onclick="overlayClick(event,'food')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <p class="modal-title">🍽 必吃美食清單</p>
+      <button class="modal-close" onclick="closeModal('food')">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <p class="food-area-label">📍 明洞</p>
+
+      <div class="food-card">
+        <div class="food-emoji">🍰</div>
+        <div class="food-info">
+          <p class="food-name">炙燒焦糖乳酪蛋糕</p>
+          <p class="food-dish">招牌甜點</p>
+          <p class="food-location"><span class="food-location-icon">📍</span>樂天百貨 B1 食品館</p>
+          <span class="food-day-tag dt4" style="background:#fce7f3;color:#9d174d;">D4 明洞商圈順道</span>
+        </div>
+      </div>
+
+      <p class="food-area-label">📍 聖水</p>
+
+      <div class="food-card">
+        <div class="food-emoji">🍞</div>
+        <div class="food-info">
+          <p class="food-name">Standard Bread</p>
+          <p class="food-dish">法式吐司</p>
+          <p class="food-location"><span class="food-location-icon">📍</span>2號線聖水站 211，3號出口較近</p>
+          <span class="food-day-tag" style="background:#dcfce7;color:#14532d;">D4 早午餐後順道</span>
+        </div>
+      </div>
+
+      <p class="food-area-label">📍 弘大</p>
+
+      <div class="food-card">
+        <div class="food-emoji">🍺</div>
+        <div class="food-info">
+          <p class="food-name">한사발포차</p>
+          <p class="food-dish">連鎖居酒屋</p>
+          <p class="food-location"><span class="food-location-icon">📍</span>弘大商圈</p>
+          <span class="food-day-tag" style="background:#ede9fe;color:#5b21b6;">宵夜首選</span>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <div class="food-emoji">🥪</div>
+        <div class="food-info">
+          <p class="food-name">JO &amp; DAWSON</p>
+          <p class="food-dish">法式吐司</p>
+          <p class="food-location"><span class="food-location-icon">📍</span>서울 마포구 동교로41길 31 지층 좌측</p>
+          <span class="food-day-tag" style="background:#fef9c3;color:#713f12;">조앤도슨 · 弘大商圈內</span>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <div class="food-emoji">🥩</div>
+        <div class="food-info">
+          <p class="food-name">Woosamzip 우삼집</p>
+          <p class="food-dish">牛五花燒肉</p>
+          <p class="food-location"><span class="food-location-icon">📍</span>弘大 3號出口</p>
+          <span class="food-day-tag" style="background:#fce7f3;color:#9d174d;">晚餐推薦</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleDay(id) {
+  const card = document.getElementById('card-' + id);
+  card.classList.toggle('open');
+}
+
+function openModal(name) {
+  document.getElementById('modal-' + name).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(name) {
+  document.getElementById('modal-' + name).classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function overlayClick(e, name) {
+  if (e.target === e.currentTarget) closeModal(name);
+}
+
+function copyAddr() {
+  const text = document.getElementById('hotelAddr').innerText;
+  const btn = document.getElementById('copyBtn');
+  const copy = (t) => {
+    btn.textContent = '✅ 已複製！';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 複製'; btn.classList.remove('copied'); }, 2200);
+  };
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(copy).catch(() => fallback(text, copy));
+  } else { fallback(text, copy); }
+}
+
+function fallback(text, cb) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;opacity:0;';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); cb(); } catch(e) {}
+  document.body.removeChild(ta);
+}
+</script>
+</body>
+</html>

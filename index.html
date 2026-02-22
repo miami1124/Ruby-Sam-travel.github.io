@@ -583,6 +583,28 @@ main {
 .dtag-5 { background: #fef9c3; color: #713f12; }
 .subway-row-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
 
+/* Weather widget */
+.weather-bar {
+  background: rgba(255,255,255,.13);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 16px;
+  padding: 12px 16px;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(10px);
+}
+.weather-left { display: flex; align-items: center; gap: 10px; }
+.weather-icon { font-size: 28px; line-height: 1; }
+.weather-temp { font-size: 24px; font-weight: 800; color: white; line-height: 1; }
+.weather-info { display: flex; flex-direction: column; gap: 2px; }
+.weather-desc { font-size: 12px; color: rgba(255,255,255,.85); font-weight: 600; }
+.weather-city { font-size: 10px; color: rgba(255,255,255,.55); letter-spacing: 1px; }
+.weather-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.weather-detail { font-size: 11px; color: rgba(255,255,255,.7); }
+.weather-loading { font-size: 12px; color: rgba(255,255,255,.6); font-style: italic; }
+
 @keyframes fadeSlideUp {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -610,6 +632,11 @@ main {
         <h1>Ruby&amp;Sam<br><span style="font-size:22px;font-weight:700;opacity:.9;">首爾6天5夜</span></h1>
         <p class="header-date">📅 3/15 (日) — 3/20 (五)</p>
       </div>
+    </div>
+
+    <!-- Weather Bar -->
+    <div class="weather-bar" id="weatherBar">
+      <span class="weather-loading">⏳ 載入首爾天氣中...</span>
     </div>
 
     <div class="quick-btns">
@@ -1213,6 +1240,60 @@ main {
 </div>
 
 <script>
+// ── Weather ──
+const weatherCodes = {
+  0:  ['☀️','晴天'], 1:  ['🌤','大致晴朗'], 2:  ['⛅️','部分多雲'], 3:  ['☁️','陰天'],
+  45: ['🌫','有霧'],  48: ['🌫','霧霜'],
+  51: ['🌦','小毛毛雨'], 53: ['🌦','毛毛雨'], 55: ['🌧','大毛毛雨'],
+  61: ['🌧','小雨'],  63: ['🌧','中雨'],  65: ['🌧','大雨'],
+  71: ['🌨','小雪'],  73: ['🌨','中雪'],  75: ['❄️','大雪'],
+  80: ['🌦','陣雨'],  81: ['🌧','中陣雨'], 82: ['⛈','強陣雨'],
+  85: ['🌨','陣雪'],  86: ['❄️','大陣雪'],
+  95: ['⛈','雷陣雨'], 96: ['⛈','雷陣雨夾冰雹'], 99: ['⛈','強雷陣雨'],
+};
+
+async function fetchWeather() {
+  try {
+    const res = await fetch('https://wttr.in/Seoul?format=j1');
+    const data = await res.json();
+    const cur = data.current_condition[0];
+    const temp = cur.temp_C;
+    const feel = cur.FeelsLikeC;
+    const humid = cur.humidity;
+    const wind = cur.windspeedKmph;
+    const desc = cur.lang_zh ? cur.lang_zh[0].value : cur.weatherDesc[0].value;
+
+    const codeMap = {
+      '晴天':'☀️','晴朗':'☀️','局部多雲':'⛅️','多雲':'☁️','陰天':'☁️',
+      '小雨':'🌧','中雨':'🌧','大雨':'🌧','毛毛雨':'🌦','陣雨':'🌦',
+      '雷雨':'⛈','雷陣雨':'⛈','小雪':'🌨','中雪':'🌨','大雪':'❄️','霧':'🌫',
+    };
+    let icon = '🌡';
+    for (const [k, v] of Object.entries(codeMap)) {
+      if (desc.includes(k)) { icon = v; break; }
+    }
+
+    document.getElementById('weatherBar').innerHTML = `
+      <div class="weather-left">
+        <span class="weather-icon">${icon}</span>
+        <div class="weather-info">
+          <span class="weather-desc">${desc}</span>
+          <span class="weather-city">📍 首爾 · 即時</span>
+        </div>
+      </div>
+      <div class="weather-right">
+        <span class="weather-temp">${temp}°C</span>
+        <span class="weather-detail">體感 ${feel}°C</span>
+        <span class="weather-detail">濕度 ${humid}% · 風 ${wind}km/h</span>
+      </div>
+    `;
+  } catch(e) {
+    document.getElementById('weatherBar').innerHTML = `<span class="weather-loading">⚠️ 天氣載入失敗，請確認網路連線</span>`;
+  }
+}
+
+fetchWeather();
+
 function toggleDay(id) {
   const card = document.getElementById('card-' + id);
   card.classList.toggle('open');
